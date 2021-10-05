@@ -5,7 +5,7 @@ public interface SetInterface<T extends Comparable<T>> {
 	/*
 	 * Elements : Objects of type T
 	 * Structure: none
-	 * Domain   : all sets with minimum 0 and no maximum elements
+	 * Domain   : only elements of same type
 	 *
 	 * Constructors:
 	 *
@@ -26,6 +26,8 @@ public interface SetInterface<T extends Comparable<T>> {
 	 * 	false - element was already present 
 	 */
 
+	void init()
+
 	boolean add(T element);
 		/* PRE -
 		   POST -   true  - element was inserted
@@ -44,7 +46,7 @@ public interface SetInterface<T extends Comparable<T>> {
 
 	int size();
 		/*PRE -
-		  POST - the size of the zet is returned
+		  POST - the amount of elements is returned
 		 */
 
 	SetInterface<T> copy();
@@ -89,5 +91,8 @@ public interface SetInterface<T extends Comparable<T>> {
 		   POST - Returns true if element is contained in set
   		    	- Returns false if element is not contained in set
 		 */
+
+
+
 	
 }
