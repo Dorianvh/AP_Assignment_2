@@ -31,10 +31,15 @@ public interface IdentifierInterface {
 	public String value();
 	
 	/* 
-	 * [3] Add anything else you think belongs to this interface 
+	 * PRE: Identifier is not empty
+    POST:the value of the element is returned
 	 */
 	
-	public void add();
+	public void add(name n);
+	/*
+    PRE:
+    POST:n is add to the end of row of elements
+     */
 
 
 }
