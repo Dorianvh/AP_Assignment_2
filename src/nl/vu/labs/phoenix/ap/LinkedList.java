@@ -18,10 +18,12 @@ public class LinkedList<E extends Comparable<E>> implements ListInterface<E> {
         }
     }
 
-    Node list;
+    private Node current;
+    private LinkedList a;
+
 
     LinkedList(){
-        list = new Node(null, null, null); //null?
+        current = null;
     }
 
     public boolean isEmpty() { //dor
@@ -30,7 +32,7 @@ public class LinkedList<E extends Comparable<E>> implements ListInterface<E> {
 
     @Override
     public ListInterface<E> init() {
-        list = null;
+        current = null;
     } //thijs
 
     @Override
@@ -40,7 +42,9 @@ public class LinkedList<E extends Comparable<E>> implements ListInterface<E> {
 
     @Override
     public ListInterface<E> insert(E d) {
-        return null;
+        current.next = new Node(d, current.prior, null);
+        current = current.next;
+        return this;
     } //thijs
 
     @Override
@@ -50,7 +54,12 @@ public class LinkedList<E extends Comparable<E>> implements ListInterface<E> {
 
     @Override
     public ListInterface<E> remove() {
-        return null;
+        if(isEmpty()){
+            return null;
+        }
+        current.prior.next = current.next;
+        current.next.prior = current.prior;
+        return this;
     } //thijs
 
     @Override
@@ -60,7 +69,13 @@ public class LinkedList<E extends Comparable<E>> implements ListInterface<E> {
 
     @Override
     public boolean goToFirst() {
-        return false;
+        if(isEmpty()){
+            return false;
+        }
+        while(current.prior != null){
+            current = current.prior;
+        }
+        return true;
     }//thijs
 
     @Override
@@ -70,7 +85,11 @@ public class LinkedList<E extends Comparable<E>> implements ListInterface<E> {
 
     @Override
     public boolean goToNext() {
-        return false;
+        if(isEmpty() || current.next == null){
+            return false;
+        }
+        current = current.next;
+        return true;
     }//thijs
 
     @Override
@@ -80,6 +99,12 @@ public class LinkedList<E extends Comparable<E>> implements ListInterface<E> {
 
     @Override
     public ListInterface<E> copy() {
-        return null;
+        goToFirst();
+        LinkedList result = new LinkedList();
+        while(current.next != null){
+            result.current = current;
+            this.current = this.current.next; //this nodig?
+        }
+        return result;
     }//thijs
 }
