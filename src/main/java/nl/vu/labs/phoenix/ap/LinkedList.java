@@ -20,8 +20,8 @@ public class LinkedList<E extends Comparable<E>> implements ListInterface<E> {
 
     Node list;
 
-    LinkedList<E>{
-        list = null;
+    LinkedList(){
+        list = new Node(null, null, null); //null?
     }
 
     public boolean isEmpty() { //dor
@@ -30,7 +30,7 @@ public class LinkedList<E extends Comparable<E>> implements ListInterface<E> {
 
     @Override
     public ListInterface<E> init() {
-        return null;
+        list = null;
     } //thijs
 
     @Override
