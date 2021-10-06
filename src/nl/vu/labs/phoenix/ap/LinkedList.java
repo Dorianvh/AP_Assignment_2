@@ -22,25 +22,32 @@ public class LinkedList<E extends Comparable<E>> implements ListInterface<E> {
     private LinkedList a;
 
 
-    LinkedList(){
+   public LinkedList(){
         current = null;
     }
 
     public boolean isEmpty() { //dor
-        return if   LinkedList == null;
+       return current ==null;
     }
 
-    @Override
+
     public ListInterface<E> init() {
         current = null;
+        return this;
     } //thijs
 
-    @Override
+
     public int size() {
-        return 0;
+       int count = 0;
+       goToFirst();
+       while (current != null){
+           current = current.next;
+           count++;
+       }
+       return count;
     } //dor
 
-    @Override
+
     public ListInterface<E> insert(E d) {
         current.next = new Node(d, current.prior, null);
         current = current.next;
@@ -49,7 +56,7 @@ public class LinkedList<E extends Comparable<E>> implements ListInterface<E> {
 
     @Override
     public E retrieve() {
-        return null;
+        return current.data;
     } //dor
 
     @Override
@@ -64,6 +71,13 @@ public class LinkedList<E extends Comparable<E>> implements ListInterface<E> {
 
     @Override
     public boolean find(E d) {
+        goToFirst();
+        while (current.next != null){
+            if (current.data == d){
+                return true;
+            }
+            current = current.next;
+        }
         return false;
     }//dor
 
@@ -80,12 +94,18 @@ public class LinkedList<E extends Comparable<E>> implements ListInterface<E> {
 
     @Override
     public boolean goToLast() {
-        return false;
+        if(isEmpty()){
+            return false;
+        }
+        while(current.prior != null){
+            current = current.prior;
+        }
+        return true;
     }//dor
 
     @Override
     public boolean goToNext() {
-        if(isEmpty() || current.next == null){
+        if(isEmpty() || current.next == null){ // als die empty is .next == null toch?
             return false;
         }
         current = current.next;
@@ -94,7 +114,11 @@ public class LinkedList<E extends Comparable<E>> implements ListInterface<E> {
 
     @Override
     public boolean goToPrevious() {
-        return false;
+        if(current.next == current.prior){
+            return false;
+        }
+        current = current.prior;
+        return true;
     }//dor
 
     @Override
