@@ -42,8 +42,8 @@ public class LinkedList<E extends Comparable<E>> implements ListInterface<E> {
 
     @Override
     public ListInterface<E> insert(E d) {
-        current.next = new Node(d, current.prior, null);
         current = current.next;
+        current = new Node(d, current.prior, null);
         return this;
     } //thijs
 
