@@ -62,7 +62,7 @@ public interface IdentifierInterface {
 	public String value();
 	
 	/* 
-	 * PRE: Identifier is not empty
+	PRE: Identifier is not empty
     POST:the value of the element is returned
 	 */
 	
