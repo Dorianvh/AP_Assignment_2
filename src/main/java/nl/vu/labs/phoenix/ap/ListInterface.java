@@ -1,7 +1,7 @@
 package nl.vu.labs.phoenix.ap;
 
 /** @elements
- *    objects of type E
+ *    objects of type Ewe
  *  @structure
  *    linear
  *  @domain
@@ -134,7 +134,6 @@ interface ListInterface<E extends Comparable<E>> {
      *    A copy of the list has been returned.
      */
     ListInterface<E> copy();
-
 
 
 }

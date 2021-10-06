@@ -16,9 +16,13 @@ public class LinkedList<E extends Comparable<E>> implements ListInterface<E> {
             this.prior = prior;
             this.next = next;
         }
-
     }
 
+    Node list;
+
+    LinkedList<E>{
+        list = null;
+    }
 
     public boolean isEmpty() { //dor
         return if   LinkedList == null;
