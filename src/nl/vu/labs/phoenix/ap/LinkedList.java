@@ -19,20 +19,23 @@ public class LinkedList<E extends Comparable<E>> implements ListInterface<E> {
     }
 
     private Node current;
-    private LinkedList a;
 
-
-   public LinkedList(){
+    public LinkedList(){
         current = null;
     }
 
     public boolean isEmpty() { //dor
-       return current ==null;
+       return this.size() == 0;
+       //current = current.prior = current.next == null
     }
 
 
     public ListInterface<E> init() {
-        current = null;
+        goToLast();
+        while(this.current != null){
+            this.remove();
+            goToPrevious();
+        }
         return this;
     } //thijs
 
@@ -41,31 +44,49 @@ public class LinkedList<E extends Comparable<E>> implements ListInterface<E> {
        int count = 0;
        goToFirst();
        while (current != null){
-           current = current.next;
            count++;
+           current = current.next;
        }
        return count;
     } //dor
 
 
     public ListInterface<E> insert(E d) {
+        if(isEmpty()){
+            current = new Node(d);
+            return this;
+        }
+        if(current.next == null){
+            current.next = new Node(d, current, null);
+            current = current.next;
+            return this;
+        }
+        current.next = current.next.prior = new Node(d, current, current.next);
         current = current.next;
-        current = new Node(d, current.prior, null);
         return this;
     } //thijs
 
     @Override
     public E retrieve() {
-        return current.data;
+       if(isEmpty()){
+           return null;
+       }
+       return current.data;
     } //dor
 
     @Override
     public ListInterface<E> remove() {
-        if(isEmpty()){
+        if(isEmpty() || current.next == null && current.prior == null){
             return null;
+        }
+        if(current.next == null){
+            current.prior.next = null;
+            current = current.prior; //wijst hij nu naar het nieuwe laatste element?
+            return this;
         }
         current.prior.next = current.next;
         current.next.prior = current.prior;
+        current = current.next;//juiste verwijzing
         return this;
     } //thijs
 
@@ -98,14 +119,14 @@ public class LinkedList<E extends Comparable<E>> implements ListInterface<E> {
             return false;
         }
         while(current.prior != null){
-            current = current.prior;
+            current = current.next;
         }
         return true;
     }//dor
 
     @Override
     public boolean goToNext() {
-        if(isEmpty() || current.next == null){ // als die empty is .next == null toch?
+        if(isEmpty() || current.next == null){
             return false;
         }
         current = current.next;
@@ -114,7 +135,7 @@ public class LinkedList<E extends Comparable<E>> implements ListInterface<E> {
 
     @Override
     public boolean goToPrevious() {
-        if(current.next == current.prior){
+        if(isEmpty() || current.prior == null){
             return false;
         }
         current = current.prior;
@@ -125,9 +146,10 @@ public class LinkedList<E extends Comparable<E>> implements ListInterface<E> {
     public ListInterface<E> copy() {
         goToFirst();
         LinkedList result = new LinkedList();
-        while(current.next != null){
-            result.current = current;
-            this.current = this.current.next; //this nodig?
+        while(this.current != null){
+            result.insert(this.current.data);
+            result.current = result.current.next;
+            this.current = this.current.next;
         }
         return result;
     }//thijs
