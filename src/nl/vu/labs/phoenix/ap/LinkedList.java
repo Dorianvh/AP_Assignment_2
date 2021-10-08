@@ -19,88 +19,103 @@ public class LinkedList<E extends Comparable<E>> implements ListInterface<E> {
     }
 
     private Node current;
+    private int nodeCount;
 
-    public LinkedList(){
-        current = null;
+    public LinkedList() {
+        init();
     }
-
-    public boolean isEmpty() { //dor
-       return this.size() == 0;
-       //current = current.prior = current.next == null
-    }
-
 
     public ListInterface<E> init() {
-        goToLast();
-        while(this.current != null){
-            this.remove();
-            goToPrevious();
-        }
+        current = null;
+        nodeCount = 0;
         return this;
     } //thijs
 
+    public boolean isEmpty() { //dor
+        return current == null;
+    }
 
     public int size() {
-       int count = 0;
-       goToFirst();
-       while (current != null){
-           count++;
-           current = current.next;
-       }
-       return count;
+       return nodeCount;
     } //dor
 
 
     public ListInterface<E> insert(E d) {
         if(isEmpty()){
             current = new Node(d);
+            nodeCount++;
             return this;
         }
-        if(current.next == null){
+        find(d);
+        if(!goToNext()){ //if d should be last
             current.next = new Node(d, current, null);
             current = current.next;
+            nodeCount++;
             return this;
         }
-        current.next = current.next.prior = new Node(d, current, current.next);
+        if(!goToPrevious()){//if d should be first
+            current.prior= new Node(d, null, current);
+            current = current.prior;
+            nodeCount++;
+            return this;
+        }
+        current.next = current.next.prior = new Node(d, current, current.next); //if d should be in the middle
         current = current.next;
+        nodeCount++;
         return this;
     } //thijs
 
     @Override
     public E retrieve() {
-       if(isEmpty()){
-           return null;
-       }
        return current.data;
     } //dor
 
     @Override
     public ListInterface<E> remove() {
         if(isEmpty() || current.next == null && current.prior == null){
-            return null;
+            return init();
         }
-        if(current.next == null){
+        if(!goToNext()){
             current.prior.next = null;
-            current = current.prior; //wijst hij nu naar het nieuwe laatste element?
+            current = current.prior;
+            nodeCount --;
+            return this;
+        }
+        if(!goToPrevious()){
+            current.next.prior = null;
+            current = current.next;
+            nodeCount --;
             return this;
         }
         current.prior.next = current.next;
         current.next.prior = current.prior;
-        current = current.next;//juiste verwijzing
+        current = current.next;
+        nodeCount --;
         return this;
     } //thijs
 
     @Override
     public boolean find(E d) {
-        goToFirst();
-        while (current.next != null){
-            if (current.data == d){
-                return true;
-            }
-            current = current.next;
+        if(isEmpty()){
+            return false;
         }
+
+        goToFirst();
+        do {
+            if (current.data == d){return true;}
+        } while (goToNext());
+
+        goToFirst();
+        if(current.data.compareTo(d) > 0){return false;}
+        goToNext();
+        do{
+            if(current.data.compareTo(d) > 0){
+                return false;
+            }
+        }while(goToNext());
         return false;
-    }//dor
+    }
+
 
     @Override
     public boolean goToFirst() {
@@ -144,13 +159,14 @@ public class LinkedList<E extends Comparable<E>> implements ListInterface<E> {
 
     @Override
     public ListInterface<E> copy() {
+        Node replace = this.current;
         goToFirst();
         LinkedList result = new LinkedList();
-        while(this.current != null){
+        do{
             result.insert(this.current.data);
-            result.current = result.current.next;
-            this.current = this.current.next;
-        }
+            result.goToNext();
+        } while(goToNext());
+        this.current = replace;
         return result;
     }//thijs
 }
