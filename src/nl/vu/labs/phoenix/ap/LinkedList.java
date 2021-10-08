@@ -63,7 +63,7 @@ public class LinkedList<E extends Comparable<E>> implements ListInterface<E> {
         current = current.next;
         nodeCount++;
         return this;
-    } //thijs
+    }
 
     @Override
     public E retrieve() {
